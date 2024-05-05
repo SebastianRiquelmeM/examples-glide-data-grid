@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BasicExample from "./components/BasicExample";
+import "./App.css";
 
 const App = () => {
 	const [showExample, setShowExample] = useState(false);
@@ -17,11 +18,18 @@ const App = () => {
 			{!showExample ? (
 				<div>
 					<h1>Examples</h1>
-					<button onClick={handleShowExample}>Basic Example</button>
+					<button
+						className="example-button"
+						onClick={handleShowExample}
+					>
+						Basic Example
+					</button>
 				</div>
 			) : (
 				<div>
-					<button onClick={handleGoBack}>Go Back</button>
+					<button className="back-button" onClick={handleGoBack}>
+						Go Back
+					</button>
 					<BasicExample />
 				</div>
 			)}
