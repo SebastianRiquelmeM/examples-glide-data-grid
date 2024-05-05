@@ -1,35 +1,69 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from "react";
+import { DataEditor, GridCellKind } from "@glideapps/glide-data-grid";
+import "@glideapps/glide-data-grid/dist/index.css";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+	const [data, setData] = useState([]);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+	useEffect(() => {
+		// Datos de ejemplo para la cuadrícula
+		const mockData = [
+			{ id: 1, name: "John Doe", age: 25 },
+			{ id: 2, name: "Jane Smith", age: 30 },
+			{ id: 3, name: "Bob Johnson", age: 35 },
+		];
 
-export default App
+		setData(mockData);
+	}, []);
+
+	const columns = [
+		{ title: "ID", id: "id", width: 50 },
+		{ title: "Name", id: "name", width: 200 },
+		{ title: "Age", id: "age", width: 100 },
+	];
+
+	const getCellContent = ([col, row]) => {
+		const item = data[row];
+		const column = columns[col];
+
+		switch (column.id) {
+			case "id":
+				return {
+					kind: GridCellKind.Number,
+					data: item.id,
+					displayData: item.id.toString(),
+				};
+			case "name":
+				return {
+					kind: GridCellKind.Text,
+					data: item.name,
+					displayData: item.name,
+				};
+			case "age":
+				return {
+					kind: GridCellKind.Number,
+					data: item.age,
+					displayData: item.age.toString(),
+				};
+			default:
+				return {
+					kind: GridCellKind.Text,
+					data: "",
+					displayData: "",
+				};
+		}
+	};
+
+	return (
+		<div>
+			<h1>Glide Data Grid Example</h1>
+			<DataEditor
+				getCellContent={getCellContent}
+				columns={columns}
+				rows={data.length}
+			/>
+		</div>
+	);
+};
+
+export default App;
